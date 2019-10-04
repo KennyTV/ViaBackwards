@@ -49,7 +49,7 @@ public abstract class BlockItemRewriter<T extends BackwardsProtocol> extends Rew
 
         Item original = ItemUtil.copyItem(i);
         if (data.hasRepItem()) {
-            i = ItemUtil.copyItem(data.getRepItem());
+            ItemUtil.copyItem(i, data.getRepItem());
 
             if (i.getTag() == null)
                 i.setTag(new CompoundTag(""));
@@ -58,9 +58,11 @@ public abstract class BlockItemRewriter<T extends BackwardsProtocol> extends Rew
             i.getTag().put(createViaNBT(original));
 
             // Keep original data
-            if (original.getTag() != null)
-                for (Tag ai : original.getTag())
+            if (original.getTag() != null) {
+                for (Tag ai : original.getTag()) {
                     i.getTag().put(ai);
+                }
+            }
 
             // Handle colors
             if (i.getTag().contains("display")) {
