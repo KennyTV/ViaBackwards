@@ -22,12 +22,10 @@ public class ItemUtil {
      * @return modified original item
      */
     public static void copyItem(Item original, Item item) {
-        if (item == null) return;
-
         original.setIdentifier(item.getIdentifier());
         original.setAmount(item.getAmount());
         original.setData(item.getData());
-        original.setTag(item.getTag());
+        original.setTag(item.getTag() != null ? item.getTag().clone() : null);
     }
 
     /**

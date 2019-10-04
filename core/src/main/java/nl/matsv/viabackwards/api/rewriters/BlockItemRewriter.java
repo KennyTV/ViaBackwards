@@ -41,11 +41,10 @@ public abstract class BlockItemRewriter<T extends BackwardsProtocol> extends Rew
     }
 
     protected Item handleItemToClient(Item i) {
-        if (i == null)
-            return null;
-        if (!replacementData.containsKey(i.getIdentifier()))
-            return i;
+        if (i == null) return null;
+
         BlockItemSettings data = replacementData.get(i.getIdentifier());
+        if (data == null) return i;
 
         Item original = ItemUtil.copyItem(i);
         if (data.hasRepItem()) {

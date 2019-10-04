@@ -684,11 +684,7 @@ public class BlockItemPackets1_13 extends BlockItemRewriter<Protocol1_12_2To1_13
                 if (((CompoundTag) tag.get("display")).get("Name") instanceof StringTag) {
                     StringTag name = display.get("Name");
                     StringTag via = display.get(NBT_TAG_NAME + "|Name");
-                    name.setValue(
-                            via != null ? via.getValue() : ChatRewriter.jsonTextToLegacy(
-                                    name.getValue()
-                            )
-                    );
+                    name.setValue(via != null ? via.getValue() : ChatRewriter.jsonTextToLegacy(name.getValue()));
                     display.remove(NBT_TAG_NAME + "|Name");
                 }
             }
