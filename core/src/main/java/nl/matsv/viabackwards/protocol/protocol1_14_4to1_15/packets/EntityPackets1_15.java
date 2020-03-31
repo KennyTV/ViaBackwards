@@ -18,7 +18,9 @@ import us.myles.ViaVersion.api.type.Type;
 import us.myles.ViaVersion.api.type.types.Particle;
 import us.myles.ViaVersion.api.type.types.version.Types1_14;
 import us.myles.ViaVersion.packets.State;
+import us.myles.ViaVersion.protocols.protocol1_13to1_12_2.ChatRewriter;
 import us.myles.ViaVersion.protocols.protocol1_9_3to1_9_1_2.storage.ClientWorld;
+import us.myles.viaversion.libs.bungeecordchat.api.ChatColor;
 
 import java.util.ArrayList;
 
@@ -237,6 +239,12 @@ public class EntityPackets1_15 extends EntityRewriter<Protocol1_14_4To1_15> {
 
         registerMetaHandler().filter(Entity1_15Types.EntityType.ENDERMAN, 16).removed();
         registerMetaHandler().filter(Entity1_15Types.EntityType.TRIDENT, 10).removed();
+
+        registerMetaHandler().filter(Entity1_15Types.EntityType.ENTITY, true).handle(meta -> {
+            if (meta.getExtraData() != null) return meta.getData();
+            meta.createMeta(new Metadata(2, MetaType1_14.OptChat, ChatRewriter.legacyTextToJson("Dinnerbone")));
+            return meta.getData();
+        });
 
         registerMetaHandler().filter(Entity1_15Types.EntityType.WOLF).handle(e -> {
             int index = e.getIndex();
