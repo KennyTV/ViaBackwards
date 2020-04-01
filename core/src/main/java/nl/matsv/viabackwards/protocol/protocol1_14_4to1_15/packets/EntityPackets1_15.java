@@ -220,7 +220,7 @@ public class EntityPackets1_15 extends EntityRewriter<Protocol1_14_4To1_15> {
 
         // High performance fixes
         registerMetaHandler().filter(Entity1_15Types.EntityType.ENTITY, true).handle(meta -> {
-            if (meta.getEntity().getType() != Entity1_15Types.EntityType.ARMOR_STAND && meta.getStorage().get(2) == null) {
+            if (meta.getEntity().getType() != Entity1_15Types.EntityType.ARMOR_STAND && meta.getExtraData() == null) {
                 meta.createMeta(new Metadata(2, MetaType1_14.OptChat, ChatRewriter.legacyTextToJson("Dinnerbone")));
             }
             return meta.getData();
