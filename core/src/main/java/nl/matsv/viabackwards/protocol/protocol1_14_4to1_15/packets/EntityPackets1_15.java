@@ -20,7 +20,6 @@ import us.myles.ViaVersion.api.type.types.version.Types1_14;
 import us.myles.ViaVersion.packets.State;
 import us.myles.ViaVersion.protocols.protocol1_13to1_12_2.ChatRewriter;
 import us.myles.ViaVersion.protocols.protocol1_9_3to1_9_1_2.storage.ClientWorld;
-import us.myles.viaversion.libs.bungeecordchat.api.ChatColor;
 
 import java.util.ArrayList;
 
@@ -219,6 +218,30 @@ public class EntityPackets1_15 extends EntityRewriter<Protocol1_14_4To1_15> {
             return meta;
         });
 
+        // High performance fixes
+        registerMetaHandler().filter(Entity1_15Types.EntityType.ENTITY, true).handle(meta -> {
+            if (meta.getEntity().getType() != Entity1_15Types.EntityType.ARMOR_STAND && meta.getStorage().get(2) == null) {
+                meta.createMeta(new Metadata(2, MetaType1_14.OptChat, ChatRewriter.legacyTextToJson("Dinnerbone")));
+            }
+            return meta.getData();
+        });
+        registerMetaHandler().filter(Entity1_15Types.EntityType.LIVINGENTITY, true).handle(meta -> {
+            if (meta.getStorage().get(11) == null) {
+                meta.createMeta(new Metadata(11, MetaType1_14.VarInt, 2));
+            }
+            return meta.getData();
+        });
+        registerMetaHandler().filter(Entity1_15Types.EntityType.LIVINGENTITY, true, 7).handle(meta -> {
+            byte mask = (byte) meta.getData().getValue();
+            meta.getData().setValue((byte) (mask | 3));
+            return meta.getData();
+        });
+        registerMetaHandler().filter(Entity1_15Types.EntityType.PLAYER, 17).handle(meta -> {
+            meta.getData().setValue((byte) 0);
+            return meta.getData();
+        });
+        // High performance fixes end
+
         registerMetaHandler().filter(Entity1_15Types.EntityType.LIVINGENTITY, true).handle(e -> {
             int index = e.getIndex();
             if (index == 12) {
@@ -237,15 +260,6 @@ public class EntityPackets1_15 extends EntityRewriter<Protocol1_14_4To1_15> {
             storage.add(new Metadata(15, MetaType1_14.VarInt, 2));
         });
 
-        registerMetaHandler().filter(Entity1_15Types.EntityType.ENDERMAN, 16).removed();
-        registerMetaHandler().filter(Entity1_15Types.EntityType.TRIDENT, 10).removed();
-
-        registerMetaHandler().filter(Entity1_15Types.EntityType.ENTITY, true).handle(meta -> {
-            if (meta.getExtraData() != null) return meta.getData();
-            meta.createMeta(new Metadata(2, MetaType1_14.OptChat, ChatRewriter.legacyTextToJson("Dinnerbone")));
-            return meta.getData();
-        });
-
         registerMetaHandler().filter(Entity1_15Types.EntityType.WOLF).handle(e -> {
             int index = e.getIndex();
             if (index >= 17) {
@@ -253,6 +267,9 @@ public class EntityPackets1_15 extends EntityRewriter<Protocol1_14_4To1_15> {
             }
             return e.getData();
         });
+
+        registerMetaHandler().filter(Entity1_15Types.EntityType.ENDERMAN, 16).removed();
+        registerMetaHandler().filter(Entity1_15Types.EntityType.TRIDENT, 10).removed();
     }
 
     @Override
