@@ -9,6 +9,7 @@ import nl.matsv.viabackwards.api.entities.storage.EntityData;
 import nl.matsv.viabackwards.api.entities.storage.EntityTracker;
 import nl.matsv.viabackwards.api.entities.storage.MetaStorage;
 import nl.matsv.viabackwards.api.exceptions.RemovedValueException;
+import org.jetbrains.annotations.Nullable;
 import us.myles.ViaVersion.api.PacketWrapper;
 import us.myles.ViaVersion.api.Via;
 import us.myles.ViaVersion.api.data.UserConnection;
@@ -66,6 +67,7 @@ public abstract class EntityRewriterBase<T extends BackwardsProtocol> extends Re
         return entityTypes.containsKey(type);
     }
 
+    @Nullable
     protected EntityData getEntityData(EntityType type) {
         return entityTypes.get(type);
     }
